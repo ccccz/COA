@@ -2,9 +2,8 @@ package integer;
 
 public class MyInteger {
 
-    public static void main(String[] args){
-        System.out.println(Integer.toBinaryString(-1));
-        System.out.println((new MyInteger("11111111111111111111111111111111")).getMe());
+    public static void main(String[] args) throws Exception {
+        System.out.println(OperaInt.add(new MyInteger(2),new MyInteger(3)).getMe());
     }
 
     static long theBig=(long)Math.pow(2,32);
