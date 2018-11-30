@@ -3,10 +3,12 @@ package integer;
 public class MyInteger {
 
     public static void main(String[] args) throws Exception {
-        System.out.println(OperaInt.add(new MyInteger(2),new MyInteger(3)).getMe());
+//        System.out.println(OperaInt.multi(new MyInteger(-7),new MyInteger(-6)).getMe());
+        OperaInt.multi(new MyInteger(-10),new MyInteger(3));
     }
 
-    static long theBig=(long)Math.pow(2,32);
+    final static int bits=32;
+    static long theBig=(long)Math.pow(2,bits);
     private int me;
     public String binaryMy;
 
@@ -16,8 +18,12 @@ public class MyInteger {
         binaryMy=complement(Integer.toBinaryString(me));
     }
     public MyInteger(String str){
-        binaryMy=complement(str);
-        me=bin2int(binaryMy);
+        me=bin2int(str);
+        if (str.substring(0,1).equals("1")){
+            me= (int) (me-theBig);
+        }
+        binaryMy=int2bin(me);
+        binaryMy=binaryMy.substring(binaryMy.length()-bits,binaryMy.length());
     }
     public MyInteger(int i){
         me=i;
@@ -44,7 +50,7 @@ public class MyInteger {
         if (str==null){
             str="";
         }
-        while(str.length()<32){
+        while(str.length()<bits){
             str="0"+str;
         }
 
@@ -67,5 +73,28 @@ public class MyInteger {
             num=(int)(num-theBig);
         }
         return num;
+    }
+
+    //数字转字符串
+    public static String int2bin(int a){
+        String bin=Integer.toBinaryString(a);
+        bin=complement(bin);
+        return bin;
+    }
+
+    //取反加一
+    public static String negative(String str){
+        char[] strs=str.toCharArray();
+        str="";
+        for (int i=0;i<strs.length;i++){
+            strs[i]=OperaInt.no(strs[i]);
+            str=str+strs[i];
+        }
+        try {
+            str=OperaInt.add(new MyInteger(str),new MyInteger(1)).getBinaryMy();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return str;
     }
 }
