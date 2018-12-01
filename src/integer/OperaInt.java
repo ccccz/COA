@@ -7,6 +7,8 @@ import java.util.ArrayList;
  */
 public class OperaInt {
 
+    final static int bits=MyInteger.bits;
+
     /**
      * 加法
      * 进位c实际是比其他的多一位的，多一位0
@@ -72,6 +74,7 @@ public class OperaInt {
      * 刚刚在听EXO的歌，说来好久都没有听过了，挺好听的真的，EXO火起来不完全是因为脸啊
      * 肯定要重构的，不过改天再说吧
      * 其实就是不断的加法，不过加的数字有三种而已，可以写成三个字符串的运算
+     * 对了还有一件事，尽量不要使用具体数字，很不灵活
      * @param a
      * @param b
      * @return
@@ -103,7 +106,7 @@ public class OperaInt {
             }
         }
         register.right(1);
-        int result=MyInteger.bin2int(toString(register.getMyRegister()));
+        long result= MyInteger.bin2int(toString(register.getMyRegister()));
         System.out.println(result);
         return new MyInteger(result);
 //        //计算
@@ -136,8 +139,59 @@ public class OperaInt {
 //        return new MyInteger((int)result);
     }
 
+    /**
+     * 整数的除法
+     * EXO的歌真的好听哇，点名call me baby
+     * 考虑不周，做了一次重构把Int都变成了long
+     * 18446744073709552000
+     * 18446744073709552000
+     * @param a
+     * @param b
+     * @return
+     * @throws Exception
+     */
     public static MyInteger division(MyInteger a,MyInteger b) throws Exception {
-        return null;
+        //特殊情况
+        if (b.getMe()==0){
+            throw new Exception("除数为0，无意义");
+        }else if (a.getMe()==0){
+            return new MyInteger(0);
+        }
+        String stra,strb;
+        //两个负数，转换为正数
+        if (a.getBinaryMy().toCharArray()[0]=='1'){
+            stra=MyInteger.negative(a.getBinaryMy());
+            strb=MyInteger.negative(b.getBinaryMy());
+        }else{
+            stra=a.getBinaryMy();
+            strb=b.getBinaryMy();
+        }
+
+        //其他
+        String result="";
+        VirtualRegister register=new VirtualRegister(stra);
+        register.right(bits);
+        for (int i=0; i<bits; i++){
+            strb=strb+"0";
+        }
+        for (int i=0; i<=bits; i++){
+            if (Math.abs(MyInteger.bin2int(toString(register.getMyRegister())))>=Math.abs(MyInteger.bin2int(strb))){
+                result=result+"1";
+                if (register.getMyRegister().get(0)==strb.toCharArray()[0]){
+                    register.sub(strb);
+                }else{
+                    register.add(strb);
+                }
+            }else{
+                result=result+"0";
+            }
+            strb=strb.substring(0,strb.length()-1);
+        }
+        if (! a.getBinaryMy().substring(0,1).equals(b.getBinaryMy().substring(0,1))){
+            result=MyInteger.negative(result);
+        }
+        System.out.println(MyInteger.bin2int(result));
+        return new MyInteger(result);
     }
 
 

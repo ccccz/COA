@@ -30,7 +30,12 @@ public class VirtualRegister {
     //
     public VirtualRegister add(String str){
         for (int i=str.length(); i<myRegister.size();i++){
-            str="0"+str;
+            if (str.toCharArray()[0]=='0'){
+                str="0"+str;
+            }else{
+                str="1"+str;
+            }
+
         }
         char[] strs=str.toCharArray();
         char[] cs=new char[strs.length+1];
@@ -42,6 +47,10 @@ public class VirtualRegister {
         }
         return this;
     }
+    public VirtualRegister sub(String str){
+        this.add(MyInteger.negative(str));
+        return this;
+    }
 
     //右移
     public VirtualRegister right(int i){
@@ -50,12 +59,14 @@ public class VirtualRegister {
         }
         return this;
     }
+    public VirtualRegister logicRight(int i){
+        for (int j=0;j<i;j++){
+            myRegister.add(0,'0');
+        }
+        return this;
+    }
 
     public int size(){
         return myRegister.size();
     }
-
-//    public String toString(){
-//        return myRegister.toString();
-//    }
 }
