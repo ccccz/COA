@@ -14,7 +14,7 @@ public class MyFloat {
 
     }
 
-    final static int sign=1,exponent=8,significand=23,allbits=32;
+    public final static int sign=1,exponent=8,significand=23,allbits=32;
     private String binaryFloat;
     private double numbleFloat;
 
